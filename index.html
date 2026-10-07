@@ -1058,7 +1058,7 @@ footer {
           </div>
         </div>
 
-        <div class="api-bar" id="apiBar">⚙ Mode démo — ajoutez votre clé API Claude pour activer l'IA complète</div>
+        <div class="api-bar" id="apiBar" style="display:none"></div>
 
         <div class="chat-bottom">
           <input type="text" class="chat-in" id="chatIn" placeholder="Posez votre question ici..." onkeydown="if(event.key==='Enter') send()" />
@@ -1456,10 +1456,9 @@ async function send() {
     history.push({ role: 'assistant', content: ans });
     removeDots(); addMsg(ans, 'bot');
     document.getElementById('apiBar').style.display = 'none';
-  } catch {
-    await new Promise(r => setTimeout(r, 1100));
+  } catch(e) {
     removeDots();
-    addMsg(getDemo(q) + '<br><small style="opacity:0.5;font-size:0.8rem">· mode démo ·</small>', 'bot');
+    addMsg('Une erreur est survenue. Merci de réessayer dans quelques secondes.', 'bot');
   }
   busy = false;
   document.getElementById('chatGo').disabled = false;
