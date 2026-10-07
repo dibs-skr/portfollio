@@ -1449,7 +1449,7 @@ async function send() {
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_KEY}` },
       body: JSON.stringify({ model: 'llama3-70b-8192', max_tokens: 800, messages: groqMessages })
     });
-    if (!res.ok) throw new Error();
+    if (!res.ok) { const err = await res.json(); console.error('Groq error:', JSON.stringify(err)); throw new Error(); }
     const data = await res.json();
     const ans = data.choices[0].message.content;
     history.push({ role: 'assistant', content: ans });
