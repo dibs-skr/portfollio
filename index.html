@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adib Chabani — AMOA · Salesforce · IA</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #050508;
-  --surface: #0b0c12;
-  --surface2: #10121a;
-  --border: #1c1f2e;
-  --border2: #252840;
-  --gold: #d4a847;
-  --gold2: #f0c96b;
-  --gold3: #8a6520;
-  --electric: #4f8ef7;
-  --electric2: #7aaeff;
-  --text: #e8e4dc;
-  --muted: #5a5d73;
-  --muted2: #8b8fa8;
+  --bg: #080c14;
+  --surface: #0d1320;
+  --surface2: #111827;
+  --border: #1a2235;
+  --border2: #1e2d45;
+  --gold: #38bdf8;
+  --gold2: #7dd3fc;
+  --gold3: #0ea5e9;
+  --electric: #38bdf8;
+  --electric2: #7dd3fc;
+  --text: #f0f4f8;
+  --muted: #4a5568;
+  --muted2: #8896a9;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -28,7 +28,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 300;
   line-height: 1.7;
   overflow-x: hidden;
@@ -50,7 +50,7 @@ body {
 #cursor-ring {
   position: fixed;
   width: 36px; height: 36px;
-  border: 1px solid rgba(212,168,71,0.4);
+  border: 1px solid rgba(56,189,248,0.4);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
@@ -97,7 +97,7 @@ nav::after {
 }
 
 .nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 1.4rem;
   letter-spacing: 0.15em;
   background: linear-gradient(135deg, var(--gold), var(--gold2));
@@ -194,7 +194,7 @@ nav::after {
 }
 
 .hero-name {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(5rem, 14vw, 14rem);
   line-height: 0.88;
   letter-spacing: 0.04em;
@@ -221,7 +221,7 @@ nav::after {
 }
 
 .hero-tagline {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(1.1rem, 2.5vw, 1.7rem);
   font-weight: 300;
   font-style: italic;
@@ -256,7 +256,7 @@ nav::after {
 }
 
 .meta-value {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.05rem;
   font-weight: 400;
   color: var(--text);
@@ -353,7 +353,7 @@ nav::after {
 }
 
 .section-number {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 8rem;
   color: rgba(255,255,255,0.02);
   position: absolute;
@@ -391,7 +391,7 @@ nav::after {
 }
 
 .section h2 {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(2.5rem, 5vw, 4.5rem);
   letter-spacing: 0.06em;
   line-height: 1;
@@ -434,14 +434,14 @@ nav::after {
   position: absolute;
   top: 2rem;
   right: 2rem;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 8rem;
-  color: rgba(212,168,71,0.06);
+  color: rgba(56,189,248,0.06);
   line-height: 1;
 }
 
 .chat-intro h3 {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 2.8rem;
   letter-spacing: 0.06em;
   line-height: 1.1;
@@ -456,7 +456,7 @@ nav::after {
 }
 
 .chat-intro p {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.05rem;
   color: var(--muted2);
   line-height: 1.8;
@@ -489,7 +489,7 @@ nav::after {
 .suggest-item:hover {
   border-color: var(--gold3);
   color: var(--gold);
-  background: rgba(212,168,71,0.04);
+  background: rgba(56,189,248,0.04);
   padding-left: 1.4rem;
 }
 
@@ -520,14 +520,14 @@ nav::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 0.9rem;
   letter-spacing: 0.1em;
   color: var(--bg);
 }
 
 .chat-identity-info h4 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -591,7 +591,7 @@ nav::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 0.65rem;
   letter-spacing: 0.05em;
 }
@@ -601,7 +601,7 @@ nav::after {
 .msg-bub {
   max-width: 80%;
   padding: 0.9rem 1.1rem;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   line-height: 1.65;
 }
@@ -614,7 +614,7 @@ nav::after {
 }
 
 .msg.user .msg-bub {
-  background: rgba(212,168,71,0.1);
+  background: rgba(56,189,248,0.1);
   border: 1px solid var(--gold3);
   color: var(--gold2);
   font-style: italic;
@@ -651,7 +651,7 @@ nav::after {
   background: var(--surface2);
   border: 1px solid var(--border);
   color: var(--text);
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   padding: 0.7rem 1rem;
   outline: none;
@@ -679,8 +679,8 @@ nav::after {
 
 .api-bar {
   padding: 0.6rem 2rem;
-  background: rgba(212,168,71,0.05);
-  border-top: 1px solid rgba(212,168,71,0.15);
+  background: rgba(56,189,248,0.05);
+  border-top: 1px solid rgba(56,189,248,0.15);
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.6rem;
   letter-spacing: 0.1em;
@@ -716,16 +716,16 @@ nav::after {
 .exp-card:hover::before { height: 100%; }
 
 .exp-year {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 3rem;
-  color: rgba(212,168,71,0.12);
+  color: rgba(56,189,248,0.12);
   line-height: 1;
   margin-bottom: 0.5rem;
   letter-spacing: 0.05em;
 }
 
 .exp-role {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.3rem;
@@ -793,7 +793,7 @@ nav::after {
 .skill-icon { font-size: 1.5rem; margin-bottom: 1rem; }
 
 .skill-name {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -836,7 +836,7 @@ footer {
 }
 
 .footer-logo {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 2rem;
   letter-spacing: 0.1em;
   background: linear-gradient(135deg, var(--gold3), var(--gold));
@@ -1285,63 +1285,127 @@ document.querySelectorAll('a, button, .suggest-item').forEach(el => {
   });
 });
 
-// CANVAS PARTICLES
+// SPACE BACKGROUND — stars + shooting stars + nebula glow
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
-let W, H, particles = [];
+let W, H;
 
 function resize() {
   W = canvas.width = window.innerWidth;
   H = canvas.height = window.innerHeight;
+  initStars();
 }
+
+// Stars
+const STAR_COUNT = 320;
+let stars = [];
+function initStars() {
+  stars = [];
+  for (let i = 0; i < STAR_COUNT; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.pow(Math.random(), 3) * 1.8 + 0.2,
+      alpha: Math.random() * 0.7 + 0.2,
+      twinkleSpeed: Math.random() * 0.015 + 0.003,
+      twinkleOffset: Math.random() * Math.PI * 2,
+      color: Math.random() > 0.85
+        ? `rgba(125,211,252,`   // cyan accent ~15%
+        : Math.random() > 0.5
+          ? `rgba(226,232,240,` // white-blue ~42%
+          : `rgba(186,230,253,` // pale blue ~42%
+    });
+  }
+}
+
+// Shooting stars
+let shoots = [];
+function spawnShoot() {
+  const angle = (Math.random() * 30 + 10) * Math.PI / 180;
+  const sx = Math.random() * W * 1.2 - W * 0.1;
+  const sy = Math.random() * H * 0.4;
+  shoots.push({
+    x: sx, y: sy,
+    vx: Math.cos(angle) * (6 + Math.random() * 6),
+    vy: Math.sin(angle) * (6 + Math.random() * 6),
+    len: 80 + Math.random() * 120,
+    alpha: 0.9,
+    fade: 0.015 + Math.random() * 0.01
+  });
+}
+setInterval(() => { if (Math.random() < 0.4) spawnShoot(); }, 2200);
+
+// Nebula blobs (static, drawn once per resize)
+let nebulaCanvas;
+function buildNebula() {
+  nebulaCanvas = document.createElement('canvas');
+  nebulaCanvas.width = W; nebulaCanvas.height = H;
+  const nc = nebulaCanvas.getContext('2d');
+  const blobs = [
+    { x: W * 0.15, y: H * 0.25, r: W * 0.22, c: 'rgba(14,165,233,' },
+    { x: W * 0.8,  y: H * 0.6,  r: W * 0.18, c: 'rgba(56,189,248,' },
+    { x: W * 0.5,  y: H * 0.8,  r: W * 0.15, c: 'rgba(6,182,212,' },
+    { x: W * 0.65, y: H * 0.1,  r: W * 0.12, c: 'rgba(99,102,241,' },
+  ];
+  blobs.forEach(b => {
+    const g = nc.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+    g.addColorStop(0,   b.c + '0.045)');
+    g.addColorStop(0.5, b.c + '0.018)');
+    g.addColorStop(1,   b.c + '0)');
+    nc.fillStyle = g;
+    nc.fillRect(0, 0, W, H);
+  });
+}
+
 resize();
-window.addEventListener('resize', resize);
+buildNebula();
+window.addEventListener('resize', () => { resize(); buildNebula(); });
 
-class Particle {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.vx = (Math.random() - 0.5) * 0.3;
-    this.vy = (Math.random() - 0.5) * 0.3;
-    this.r = Math.random() * 1.2 + 0.3;
-    this.alpha = Math.random() * 0.4 + 0.1;
-    this.gold = Math.random() > 0.7;
-  }
-  update() {
-    this.x += this.vx; this.y += this.vy;
-    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = this.gold
-      ? `rgba(212,168,71,${this.alpha})`
-      : `rgba(79,142,247,${this.alpha * 0.5})`;
-    ctx.fill();
-  }
-}
-
-for (let i = 0; i < 120; i++) particles.push(new Particle());
-
+let t = 0;
 function animCanvas() {
   ctx.clearRect(0, 0, W, H);
-  particles.forEach(p => { p.update(); p.draw(); });
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 100) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(212,168,71,${0.04 * (1 - dist/100)})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
+
+  // Nebula
+  ctx.drawImage(nebulaCanvas, 0, 0);
+
+  // Stars with twinkle
+  t += 0.016;
+  stars.forEach(s => {
+    const tw = s.alpha * (0.6 + 0.4 * Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = s.color + tw + ')';
+    ctx.fill();
+    // Glow on bigger stars
+    if (s.r > 1.2) {
+      const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
+      g.addColorStop(0, s.color + (tw * 0.4) + ')');
+      g.addColorStop(1, s.color + '0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * 4, 0, Math.PI * 2);
+      ctx.fill();
     }
-  }
+  });
+
+  // Shooting stars
+  shoots = shoots.filter(s => s.alpha > 0);
+  shoots.forEach(s => {
+    const tx = s.x - s.vx * (s.len / Math.sqrt(s.vx*s.vx + s.vy*s.vy));
+    const ty = s.y - s.vy * (s.len / Math.sqrt(s.vx*s.vx + s.vy*s.vy));
+    const grad = ctx.createLinearGradient(tx, ty, s.x, s.y);
+    grad.addColorStop(0, `rgba(186,230,253,0)`);
+    grad.addColorStop(1, `rgba(226,240,255,${s.alpha})`);
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(s.x, s.y);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    s.x += s.vx; s.y += s.vy;
+    s.alpha -= s.fade;
+  });
+
   requestAnimationFrame(animCanvas);
 }
 animCanvas();
