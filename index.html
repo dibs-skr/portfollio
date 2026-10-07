@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adib Chabani — AMOA · Salesforce · IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050508;
+  --surface: #0b0c12;
+  --surface2: #10121a;
+  --border: #1c1f2e;
+  --border2: #252840;
+  --gold: #d4a847;
+  --gold2: #f0c96b;
+  --gold3: #8a6520;
+  --electric: #4f8ef7;
+  --electric2: #7aaeff;
+  --text: #e8e4dc;
+  --muted: #5a5d73;
+  --muted2: #8b8fa8;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  mix-blend-mode: difference;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(212,168,71,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.18s ease;
+}
+
+/* CANVAS BACKGROUND */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* NOISE */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  mix-blend-mode: normal;
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 4rem; right: 4rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2), transparent);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--gold3);
+  color: var(--gold) !important;
+  padding: 0.55rem 1.4rem;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.3s !important;
+  position: relative;
+  overflow: hidden;
+}
+.nav-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+  z-index: -1;
+}
+.nav-cta:hover { color: var(--bg) !important; }
+.nav-cta:hover::before { transform: translateX(0); }
+.nav-cta::after { display: none !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 4rem 4rem;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  animation: slideRight 0.8s 0.2s ease forwards;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 40px; height: 1px;
+  background: var(--gold);
+}
+
+.hero-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 14vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.hero-name .line {
+  display: block;
+  opacity: 0;
+  transform: translateY(100%);
+  animation: lineUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-name .line:nth-child(1) { animation-delay: 0.3s; }
+.hero-name .line:nth-child(2) {
+  animation-delay: 0.45s;
+  -webkit-text-stroke: 1px var(--gold3);
+  color: transparent;
+  background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: lineUp 0.9s 0.45s cubic-bezier(0.16,1,0.3,1) forwards, shimmer 4s 1.5s linear infinite;
+}
+
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted2);
+  max-width: 700px;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.7s ease forwards;
+  line-height: 1.5;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.85s ease forwards;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.meta-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.meta-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.25rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 1s ease forwards;
+}
+
+.btn-gold {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  color: var(--bg);
+  border: none;
+  padding: 0.9rem 2.2rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold2);
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+}
+.btn-gold:hover::before { transform: translateX(0); }
+.btn-gold span { position: relative; z-index: 1; }
+
+.btn-outline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--muted2);
+  border: 1px solid var(--border2);
+  padding: 0.9rem 2.2rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.3s;
+}
+.btn-outline:hover { border-color: var(--gold3); color: var(--gold); }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.4s ease forwards;
+}
+.scroll-hint span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s infinite;
+}
+
+/* SECTION BASE */
+.section {
+  position: relative;
+  z-index: 2;
+  padding: 7rem 4rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.section-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 8rem;
+  color: rgba(255,255,255,0.02);
+  position: absolute;
+  top: 3rem;
+  right: 4rem;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: 0.05em;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::before {
+  content: '';
+  width: 25px; height: 1px;
+  background: var(--gold);
+}
+
+.section h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--text);
+}
+
+/* CHAT SECTION */
+.chat-section {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.chat-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  min-height: 600px;
+}
+
+.chat-intro {
+  padding: 4rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.chat-intro::after {
+  content: '\201C';
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 8rem;
+  color: rgba(212,168,71,0.06);
+  line-height: 1;
+}
+
+.chat-intro h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.chat-intro h3 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.chat-intro p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--muted2);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.suggest-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.suggest-item {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted2);
+  padding: 0.65rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.suggest-item::before { content: '\203A'; color: var(--gold3); }
+.suggest-item:hover {
+  border-color: var(--gold3);
+  color: var(--gold);
+  background: rgba(212,168,71,0.04);
+  padding-left: 1.4rem;
+}
+
+/* CHAT WINDOW */
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-topbar {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.01);
+}
+
+.chat-identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chat-ava {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  color: var(--bg);
+}
+
+.chat-identity-info h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.chat-identity-info p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 2s infinite;
+}
+
+.chat-lang {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.chat-feed {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 360px;
+  max-height: 420px;
+  background: rgba(0,0,0,0.2);
+}
+
+.chat-feed::-webkit-scrollbar { width: 3px; }
+.chat-feed::-webkit-scrollbar-track { background: transparent; }
+.chat-feed::-webkit-scrollbar-thumb { background: var(--border2); }
+
+.msg {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  animation: msgSlide 0.35s ease both;
+}
+.msg.user { flex-direction: row-reverse; }
+
+.msg-av {
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+}
+.msg.bot .msg-av { background: linear-gradient(135deg, var(--gold3), var(--gold)); color: var(--bg); }
+.msg.user .msg-av { background: var(--surface2); border: 1px solid var(--border2); color: var(--muted2); }
+
+.msg-bub {
+  max-width: 80%;
+  padding: 0.9rem 1.1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.msg.bot .msg-bub {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-top-left-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+}
+
+.msg.user .msg-bub {
+  background: rgba(212,168,71,0.1);
+  border: 1px solid var(--gold3);
+  color: var(--gold2);
+  font-style: italic;
+  border-top-right-radius: 0;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 5px;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  width: fit-content;
+}
+.typing-dots span {
+  width: 5px; height: 5px;
+  background: var(--gold3);
+  border-radius: 50%;
+  animation: typing 1.2s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+.chat-bottom {
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.chat-in {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  padding: 0.7rem 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.chat-in:focus { border-color: var(--gold3); }
+.chat-in::placeholder { color: var(--muted); font-style: italic; }
+
+.chat-go {
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  border: none;
+  color: var(--bg);
+  width: 42px; height: 42px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
+}
+.chat-go:hover { background: var(--gold2); transform: scale(1.05); }
+.chat-go:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.api-bar {
+  padding: 0.6rem 2rem;
+  background: rgba(212,168,71,0.05);
+  border-top: 1px solid rgba(212,168,71,0.15);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--gold3);
+  text-transform: uppercase;
+}
+
+/* EXPERIENCE */
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.exp-card {
+  background: var(--bg);
+  padding: 2.5rem;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.exp-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 0;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  transition: height 0.4s ease;
+}
+.exp-card:hover { background: var(--surface); }
+.exp-card:hover::before { height: 100%; }
+
+.exp-year {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  color: rgba(212,168,71,0.12);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.exp-role {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+
+.exp-company {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.exp-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.exp-points li {
+  font-size: 0.9rem;
+  color: var(--muted2);
+  padding-left: 1rem;
+  position: relative;
+  line-height: 1.5;
+}
+.exp-points li::before {
+  content: '\00B7';
+  position: absolute;
+  left: 0;
+  color: var(--gold3);
+}
+
+/* SKILLS */
+.skills-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 1px solid var(--border);
+  border-right: none;
+}
+
+.skill-col {
+  border-right: 1px solid var(--border);
+  padding: 2rem 1.5rem;
+  transition: background 0.3s;
+  position: relative;
+}
+.skill-col:hover { background: var(--surface); }
+
+.skill-col::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 1.5rem; right: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold3), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+}
+.skill-col:hover::after { transform: scaleX(1); }
+
+.skill-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+
+.skill-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.skill-list span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  border-left: 1px solid var(--border2);
+  padding-left: 0.5rem;
+}
+
+/* DIVIDER FULL */
+.full-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+
+/* FOOTER */
+footer {
+  position: relative;
+  z-index: 2;
+  padding: 4rem;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 2rem;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-center {
+  text-align: center;
+}
+
+.footer-center p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.footer-contact {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.footer-contact a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--muted2);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-contact a:hover { color: var(--gold); }
+
+/* ANIMATIONS */
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes lineUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(0.7); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@keyframes typing {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
+@keyframes msgSlide {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  nav { padding: 1.25rem 2rem; }
+  nav::after { left: 2rem; right: 2rem; }
+  .hero { padding: 7rem 2rem 4rem; }
+  .chat-layout { grid-template-columns: 1fr; }
+  .chat-intro { border-right: none; border-bottom: 1px solid var(--border); }
+  .exp-grid { grid-template-columns: 1fr; }
+  .skills-strip { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: 4rem 2rem; }
+  footer { grid-template-columns: 1fr; text-align: center; padding: 2.5rem 2rem; }
+  .footer-contact { text-align: center; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bgCanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ADIB CHABANI</div>
+  <ul class="nav-links">
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#education">Formation</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#chat">Ask the AI</a></li>
+    <li><a href="#chat" class="nav-cta">Recruiter? Ask me →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Disponible · Paris · Open to opportunities</div>
+
+  <div class="hero-name">
+    <span class="line">ADIB</span>
+    <span class="line">CHABANI</span>
+  </div>
+
+  <p class="hero-tagline">
+    AMOA Project Manager &amp; Salesforce Consultant — 7 ans entre la finance, la transformation digitale et l'orchestration IA.
+  </p>
+
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label">Certification</span>
+      <span class="meta-value">Salesforce ADM-201</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Spécialités</span>
+      <span class="meta-value">AMOA · ITIL · Agile</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Langues</span>
+      <span class="meta-value">FR · EN · AR</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Expérience</span>
+      <span class="meta-value">+7 ans</span>
+    </div>
+  </div>
+
+  <div class="hero-actions">
+    <a href="#chat" class="btn-gold"><span>💬 Poser une question à l'IA</span></a>
+    <a href="mailto:chabaniadib@hotmail.com" class="btn-outline">✉ Contact direct</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- CHATBOT -->
+<section style="position:relative;z-index:2;padding:0 4rem;max-width:1300px;margin:0 auto 0;" id="chat">
+  <div class="chat-section reveal">
+    <div class="chat-layout">
+      <div class="chat-intro">
+        <div class="section-label">Assistant IA</div>
+        <h3>Posez-moi<br>n'importe<br><em>quelle question</em></h3>
+        <p>Je connais le parcours, les compétences et les ambitions d'Adib. Je réponds en français ou en anglais selon votre préférence.</p>
+        <div class="suggest-grid">
+          <button class="suggest-item" onclick="ask('Quelle est son expérience en gestion de projet ?')">Expérience en gestion de projet</button>
+          <button class="suggest-item" onclick="ask('Parle-moi de sa certification Salesforce')">Certification Salesforce ADM-201</button>
+          <button class="suggest-item" onclick="ask('Quels secteurs a-t-il couverts ?')">Secteurs couverts (banque, énergie...)</button>
+          <button class="suggest-item" onclick="ask('What makes him a strong candidate?')">Why hire him? (EN)</button>
+          <button class="suggest-item" onclick="ask(`Quelle est sa vision sur l\'IA et l\'automatisation ?`)">Vision IA &amp; Automatisation</button>
+        </div>
+      </div>
+
+      <div class="chat-panel">
+        <div class="chat-topbar">
+          <div class="chat-identity">
+            <div class="chat-ava">AC</div>
+            <div class="chat-identity-info">
+              <h4>Assistant IA — Adib Chabani</h4>
+              <p><span class="live-dot"></span> En ligne · FR &amp; EN</p>
+            </div>
+          </div>
+          <div class="chat-lang">Bilingue</div>
+        </div>
+
+        <div class="chat-feed" id="chatFeed">
+          <div class="msg bot">
+            <div class="msg-av">AC</div>
+            <div class="msg-bub">
+              Bonjour ! Je suis l'assistant IA d'Adib Chabani. Que souhaitez-vous savoir sur son parcours, ses compétences ou ses ambitions ?
+            </div>
+          </div>
+        </div>
+
+        <div class="api-bar" id="apiBar">⚙ Mode démo — ajoutez votre clé API Claude pour activer l'IA complète</div>
+
+        <div class="chat-bottom">
+          <input type="text" class="chat-in" id="chatIn" placeholder="Posez votre question ici..." onkeydown="if(event.key==='Enter') send()" />
+          <button class="chat-go" id="chatGo" onclick="send()">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="section-number">01</div>
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Parcours</div>
+      <h2>Expérience</h2>
+    </div>
+  </div>
+
+  <div class="exp-grid reveal">
+    <div class="exp-card">
+      <div class="exp-year">2022</div>
+      <div class="exp-role">Chief Financial Officer</div>
+      <div class="exp-company">Janismar · Casablanca</div>
+      <ul class="exp-points">
+        <li>Définition des objectifs stratégiques et opérationnels</li>
+        <li>Création et suivi KPIs (coûts, productivité, rentabilité)</li>
+        <li>Reporting financier hebdomadaire et mensuel</li>
+        <li>Analyse rentabilité par centre de profit / client</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2019</div>
+      <div class="exp-role">Project Manager Consultant</div>
+      <div class="exp-company">CGI · La Banque Postale · Paris</div>
+      <ul class="exp-points">
+        <li>Refonte procédures gestion incidents CBK-CRC</li>
+        <li>Audits et études d'impact sur processus existants</li>
+        <li>Standardisation ITIL &amp; conduite du changement</li>
+        <li>Formation et accompagnement utilisateurs</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2019</div>
+      <div class="exp-role">Business Analyst</div>
+      <div class="exp-company">Amaris · Société Générale · La Défense</div>
+      <ul class="exp-points">
+        <li>Rédaction user stories avec parties prenantes métier</li>
+        <li>Conception stratégies de test &amp; gestion UAT</li>
+        <li>Rapports d'homologation pour validation de release</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2017</div>
+      <div class="exp-role">Application Operations Lead · PM</div>
+      <div class="exp-company">AUSY · EDF · Paris</div>
+      <ul class="exp-points">
+        <li>Supervision multi-parties (Business, MOA, TMA, Architectes)</li>
+        <li>Déploiement application 450K+ utilisateurs</li>
+        <li>Budget, cadrage projet &amp; conduite du changement</li>
+        <li>Jira / Excel / SQL Server</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2015</div>
+      <div class="exp-role">Banking Performance Controller</div>
+      <div class="exp-company">UBS Wealth Management · Paris</div>
+      <ul class="exp-points">
+        <li>Analyse résultats financiers &amp; KPIs</li>
+        <li>Rapports mensuels produits structurés (EMTN)</li>
+        <li>Consolidation actif/passif · réconciliation SAP/FI</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2013</div>
+      <div class="exp-role">Commercial Controller</div>
+      <div class="exp-company">Hewlett Packard ES · Shanghai</div>
+      <ul class="exp-points">
+        <li>Création dashboard de gestion</li>
+        <li>Analyse des écarts &amp; calcul bonus commerciaux</li>
+        <li>Reporting indicateurs de performance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+<!-- EDUCATION -->
+<section class="section" id="education">
+  <div class="section-number">02</div>
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Diplômes &amp; Certifications</div>
+      <h2>Formation</h2>
+    </div>
+  </div>
+
+  <div class="exp-grid reveal">
+    <div class="exp-card">
+      <div class="exp-year">2025</div>
+      <div class="exp-role">Salesforce Administrator</div>
+      <div class="exp-company">Certification ADM-201 · Salesforce</div>
+      <ul class="exp-points">
+        <li>Configuration, automatisation et gestion CRM</li>
+        <li>Flows, rapports, tableaux de bord</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2016</div>
+      <div class="exp-role">MSc Audit, Contrôle de Gestion &amp; SI</div>
+      <div class="exp-company">SKEMA Business School · La Défense Paris</div>
+      <ul class="exp-points">
+        <li>Spécialisation Audit &amp; Systèmes d'Information</li>
+        <li>Mémoire : La méthode ABC en contrôle de gestion bancaire</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2014</div>
+      <div class="exp-role">BBA International Business</div>
+      <div class="exp-company">American Business School · Paris</div>
+      <ul class="exp-points">
+        <li>Bachelor Administration des Affaires</li>
+        <li>Spécialisation Business International</li>
+      </ul>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-year">2009</div>
+      <div class="exp-role">Business Administration</div>
+      <div class="exp-company">Université Jiaotong · Shanghai Chine</div>
+      <ul class="exp-points">
+        <li>Undergraduate Program en Administration des Affaires</li>
+        <li>Immersion internationale — Chine</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="full-divider">
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="section-number">03</div>
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Compétences</div>
+      <h2>Expertise</h2>
+    </div>
+  </div>
+
+  <div class="skills-strip reveal">
+    <div class="skill-col">
+      <div class="skill-icon">☁️</div>
+      <div class="skill-name">Salesforce &amp; CRM</div>
+      <div class="skill-list">
+        <span>ADM-201</span>
+        <span>Configuration</span>
+        <span>Flows</span>
+        <span>Reports</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">IA &amp; Automatisation</div>
+      <div class="skill-list">
+        <span>Orchestration</span>
+        <span>API Integration</span>
+        <span>Process Auto.</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-icon">📋</div>
+      <div class="skill-name">Gestion Projet</div>
+      <div class="skill-list">
+        <span>AMOA</span>
+        <span>Agile/Scrum</span>
+        <span>ITIL</span>
+        <span>Jira</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-icon">💰</div>
+      <div class="skill-name">Finance &amp; Control</div>
+      <div class="skill-list">
+        <span>KPI Design</span>
+        <span>SAP/FI</span>
+        <span>ALM</span>
+        <span>Excel</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-icon">🧪</div>
+      <div class="skill-name">Analyse &amp; Tests</div>
+      <div class="skill-list">
+        <span>Business Analysis</span>
+        <span>UAT</span>
+        <span>SQL Server</span>
+        <span>User Stories</span>
+      </div>
+    </div>
+    <div class="skill-col">
+      <div class="skill-icon">🌍</div>
+      <div class="skill-name">Langues</div>
+      <div class="skill-list">
+        <span>Français · natif</span>
+        <span>English · fluent</span>
+        <span>Arabe · pro</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">ADIB<br>CHABANI</div>
+  <div class="footer-center">
+    <p>AMOA · Salesforce ADM-201 · IA &amp; Automatisation</p>
+    <p style="margin-top:0.5rem;opacity:0.4">Neuilly-sur-Seine · Paris · 2025</p>
+  </div>
+  <div class="footer-contact">
+    <a href="mailto:chabaniadib@hotmail.com">chabaniadib@hotmail.com</a>
+    <a href="tel:+212661140025">+212 661 140 025</a>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 80);
+});
+document.querySelectorAll('a, button, .suggest-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cur.style.width = '20px'; cur.style.height = '20px';
+    ring.style.width = '50px'; ring.style.height = '50px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cur.style.width = '10px'; cur.style.height = '10px';
+    ring.style.width = '36px'; ring.style.height = '36px';
+  });
+});
+
+// CANVAS PARTICLES
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.r = Math.random() * 1.2 + 0.3;
+    this.alpha = Math.random() * 0.4 + 0.1;
+    this.gold = Math.random() > 0.7;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = this.gold
+      ? `rgba(212,168,71,${this.alpha})`
+      : `rgba(79,142,247,${this.alpha * 0.5})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+function animCanvas() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(212,168,71,${0.04 * (1 - dist/100)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animCanvas);
+}
+animCanvas();
+
+// SCROLL REVEAL
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 80);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// CHAT
+const PROFILE = `
+Tu es l'assistant IA personnel d'Adib Chabani. Tu réponds aux recruteurs en son nom.
+Détecte automatiquement la langue (FR ou EN) et réponds dans la même langue.
+Sois concis, professionnel, et chaleureux. Maximum 4-5 phrases sauf si question complexe.
+
+PROFIL D'ADIB CHABANI :
+- Titre : AMOA Project Manager | Salesforce Consultant ADM-201
+- Localisation : Neuilly-sur-Seine, Paris
+- Email : chabaniadib@hotmail.com | Tel : +212 661 140 025
+- Expérience : +7 ans en gestion de projet, transformation digitale, contrôle financier
+- Certification : Salesforce ADM-201 (2025)
+
+EXPÉRIENCES :
+2022 · CFO — Janismar / Casablanca : stratégie, KPIs, reporting financier
+2019 · PM Consultant — CGI / La Banque Postale / Paris : refonte incidents, ITIL, change management
+2019 · Business Analyst — Amaris / Société Générale / La Défense : user stories, UAT, homologation
+2017 · App Operations Lead/PM — AUSY / EDF / Paris : 450K+ users, multi-parties, budget, Jira/SQL
+2016 · QA/Test Analyst — AUSY / HUMANIS / Paris : plans de test, Agile
+2015 · Banking Performance Controller — UBS Wealth Management / Paris : EMTN, SAP/FI, ALM
+2013 · Commercial Controller — HP ES / Shanghai : dashboard, variance analysis
+
+FORMATION :
+- 2025 : Salesforce ADM-201
+- 2016 : SKEMA Business School — MSc Audit, Contrôle de Gestion & SI
+- 2014 : American Business School Paris — BBA International Business
+- 2009 : Université Jiaotong Shanghai — Business Administration
+
+COMPÉTENCES : Salesforce ADM-201, AMOA, Agile/Scrum, ITIL, Business Analysis, Contrôle financier, SAP/FI, SQL, Excel, Jira, IA & Automatisation, CRM, Change Management
+
+LANGUES : Français (natif), Anglais (courant), Arabe (professionnel)
+
+RÈGLES : Ne pas inventer d'informations. Si tu ne sais pas, dire "contactez Adib directement". Toujours encourager à prendre contact pour un entretien.
+`;
+
+const demos = {
+  projet: "Adib a +7 ans d'expérience en gestion de projet AMOA. Il a piloté le déploiement d'une application EDF pour 450K+ utilisateurs et redessiné les procédures d'incidents à La Banque Postale selon ITIL. Il maîtrise Agile/Scrum, le change management et Jira.",
+  salesforce: "Adib est certifié Salesforce ADM-201 (2025). Il combine cette expertise CRM avec +7 ans de transformation digitale et gestion de projet — un profil rare qui permet de comprendre à la fois les besoins métier et la configuration technique Salesforce.",
+  banque: "Adib a travaillé chez UBS Wealth Management (contrôle performance, EMTN, SAP/FI), La Banque Postale (PM/ITIL) et Société Générale (Business Analyst). Le secteur financier est au cœur de son parcours.",
+  ia: "Adib est passionné par l'IA et l'automatisation. Il explore activement l'orchestration IA et les outils comme Claude API pour construire des systèmes automatisés — ce site en est un exemple concret !",
+  skills: "Adib's key skills: Salesforce ADM-201, AMOA project management, Agile/Scrum & ITIL, business analysis, financial controlling (SAP/FI, KPIs), change management, SQL & Jira. Trilingual: French, English, Arabic. Based in Paris.",
+  default: "Adib a un profil hybride rare : finance, gestion de projet grands comptes, certification Salesforce et passion pour l'IA. Pour en savoir plus, contactez-le directement à chabaniadib@hotmail.com"
+};
+
+function getDemo(q) {
+  const l = q.toLowerCase();
+  if (l.includes('projet') || l.includes('project') || l.includes('management') || l.includes('amoa')) return demos.projet;
+  if (l.includes('salesforce') || l.includes('crm') || l.includes('adm')) return demos.salesforce;
+  if (l.includes('banque') || l.includes('bank') || l.includes('finance') || l.includes('ubs')) return demos.banque;
+  if (l.includes('ia') || l.includes('ai') || l.includes('automat') || l.includes('intelligence')) return demos.ia;
+  if (l.includes('skill') || l.includes('comp') || l.includes('expertise') || l.includes('candidate')) return demos.skills;
+  return demos.default;
+}
+
+let history = [];
+let busy = false;
+
+function addMsg(text, role) {
+  const feed = document.getElementById('chatFeed');
+  const d = document.createElement('div');
+  d.className = `msg ${role}`;
+  d.innerHTML = `<div class="msg-av">${role==='bot'?'AC':'R'}</div><div class="msg-bub">${text}</div>`;
+  feed.appendChild(d);
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function showDots() {
+  const feed = document.getElementById('chatFeed');
+  const d = document.createElement('div');
+  d.className = 'msg bot'; d.id = 'dots';
+  d.innerHTML = `<div class="msg-av">AC</div><div class="typing-dots"><span></span><span></span><span></span></div>`;
+  feed.appendChild(d); feed.scrollTop = feed.scrollHeight;
+}
+
+function removeDots() { const el = document.getElementById('dots'); if (el) el.remove(); }
+
+async function send() {
+  const inp = document.getElementById('chatIn');
+  const q = inp.value.trim();
+  if (!q || busy) return;
+  inp.value = ''; busy = true;
+  document.getElementById('chatGo').disabled = true;
+  addMsg(q, 'user');
+  showDots();
+  history.push({ role: 'user', content: q });
+  try {
+    const GROQ_KEY = 'GROQ_API_KEY_HERE';
+    const groqMessages = [{ role: 'system', content: PROFILE }, ...history];
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_KEY}` },
+      body: JSON.stringify({ model: 'llama3-70b-8192', max_tokens: 800, messages: groqMessages })
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const ans = data.choices[0].message.content;
+    history.push({ role: 'assistant', content: ans });
+    removeDots(); addMsg(ans, 'bot');
+    document.getElementById('apiBar').style.display = 'none';
+  } catch {
+    await new Promise(r => setTimeout(r, 1100));
+    removeDots();
+    addMsg(getDemo(q) + '<br><small style="opacity:0.5;font-size:0.8rem">· mode démo ·</small>', 'bot');
+  }
+  busy = false;
+  document.getElementById('chatGo').disabled = false;
+}
+
+function ask(q) { document.getElementById('chatIn').value = q; send(); }
+</script>
+</body>
+</html>
