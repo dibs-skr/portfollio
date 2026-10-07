@@ -1178,7 +1178,7 @@ footer {
 
     <!-- VIDEO CARD -->
     <div class="exp-card video-card" onclick="openVideoModal('eagle_compressed.mp4')" style="cursor:pointer;padding:0;overflow:hidden;position:relative;min-height:220px;">
-      <video class="video-thumb" src="eagle_compressed.mp4" muted loop autoplay playsinline
+      <video class="video-thumb" src="eagle_compressed.mp4" muted loop playsinline preload="auto"
         style="width:100%;height:100%;object-fit:cover;display:block;min-height:220px;"></video>
       <div style="position:absolute;inset:0;background:rgba(4,8,18,0.45);display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;">
         <div class="play-btn" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);width:56px;height:56px;border-radius:50%;background:rgba(56,189,248,0.18);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;">
@@ -1451,16 +1451,27 @@ const demos = {
   default: "Adib a un profil hybride rare : finance, gestion de projet grands comptes, certification Salesforce et passion pour l'IA. Pour en savoir plus, contactez-le directement à chabani-adib@hotmail.com"
 };
 
-// AUTOPLAY VIDEO CARDS ON SCROLL
-document.querySelectorAll('video.video-thumb').forEach(v => {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { v.play().catch(()=>{}); }
-      else { v.pause(); }
-    });
-  }, { threshold: 0.3 });
-  obs.observe(v);
-});
+// AUTOPLAY VIDEO CARDS
+function startVideoThumbs() {
+  document.querySelectorAll('video.video-thumb').forEach(v => {
+    v.muted = true;
+    v.loop = true;
+    v.playsInline = true;
+    v.play().catch(() => {});
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) v.play().catch(()=>{});
+        else v.pause();
+      });
+    }, { threshold: 0.1 });
+    obs.observe(v);
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startVideoThumbs);
+} else {
+  startVideoThumbs();
+}
 
 // VIDEO MODAL
 function openVideoModal(src) {
