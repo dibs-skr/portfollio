@@ -77,14 +77,13 @@ body {
   background: rgba(4, 8, 18, 0.52);
   z-index: 1;
 }
-#video-bg iframe {
+#video-bg video {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 177.78vh; /* 9:16 vertical → fill height */
-  height: 100vh;
-  min-width: 100vw;
-  border: none;
+  min-width: 100%; min-height: 100%;
+  width: auto; height: auto;
+  object-fit: cover;
   pointer-events: none;
 }
 
@@ -958,13 +957,11 @@ footer {
 <div id="cursor-ring"></div>
 <canvas id="bgCanvas"></canvas>
 
-<!-- VIDEO BACKGROUND — SpaceX Falcon 9 launch, looped, muted, no controls -->
+<!-- VIDEO BACKGROUND -->
 <div id="video-bg">
-  <iframe
-    src="https://www.youtube.com/embed/56UR1ie7Zwc?autoplay=1&mute=1&loop=1&playlist=56UR1ie7Zwc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1"
-    allow="autoplay; encrypted-media"
-    allowfullscreen
-  ></iframe>
+  <video autoplay muted loop playsinline>
+    <source src="bg.mp4" type="video/mp4">
+  </video>
 </div>
 
 
