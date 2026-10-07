@@ -1451,6 +1451,17 @@ const demos = {
   default: "Adib a un profil hybride rare : finance, gestion de projet grands comptes, certification Salesforce et passion pour l'IA. Pour en savoir plus, contactez-le directement à chabani-adib@hotmail.com"
 };
 
+// AUTOPLAY VIDEO CARDS ON SCROLL
+document.querySelectorAll('video.video-thumb').forEach(v => {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { v.play().catch(()=>{}); }
+      else { v.pause(); }
+    });
+  }, { threshold: 0.3 });
+  obs.observe(v);
+});
+
 // VIDEO MODAL
 function openVideoModal(src) {
   const modal = document.getElementById('videoModal');
