@@ -1175,8 +1175,30 @@ footer {
         <li>Objectif : démontrer la valeur d'un CRM Salesforce comme outil de gouvernance des risques</li>
       </ul>
     </div>
+
+    <!-- VIDEO CARD -->
+    <div class="exp-card video-card" onclick="openVideoModal('eagle_compressed.mp4')" style="cursor:pointer;padding:0;overflow:hidden;position:relative;min-height:220px;">
+      <video class="video-thumb" src="eagle_compressed.mp4" muted loop autoplay playsinline
+        style="width:100%;height:100%;object-fit:cover;display:block;min-height:220px;"></video>
+      <div style="position:absolute;inset:0;background:rgba(4,8,18,0.45);display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;">
+        <div class="play-btn" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);width:56px;height:56px;border-radius:50%;background:rgba(56,189,248,0.18);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polygon points="6,3 18,10 6,17" fill="#38bdf8"/></svg>
+        </div>
+        <div class="exp-year" style="margin-bottom:0.3rem">Vidéo · 2026</div>
+        <div class="exp-role" style="font-size:0.95rem">Eagle — projet en cours</div>
+        <div class="exp-company">Cliquer pour regarder</div>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- VIDEO MODAL -->
+<div id="videoModal" onclick="closeVideoModal()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(4,8,18,0.95);align-items:center;justify-content:center;cursor:pointer;">
+  <div onclick="event.stopPropagation()" style="position:relative;width:90vw;max-width:1100px;max-height:90vh;">
+    <video id="modalVideo" controls autoplay style="width:100%;max-height:85vh;border-radius:8px;display:block;"></video>
+    <button onclick="closeVideoModal()" style="position:absolute;top:-2.5rem;right:0;background:none;border:none;color:#38bdf8;font-size:1.8rem;cursor:pointer;line-height:1;">✕</button>
+  </div>
+</div>
 
 <hr class="full-divider">
 
@@ -1428,6 +1450,24 @@ const demos = {
   skills: "Adib's key skills: Salesforce ADM-201, AMOA project management, Agile/Scrum & ITIL, business analysis, financial controlling (SAP/FI, KPIs), change management, SQL & Jira. Trilingual: French, English, Arabic. Based in Paris.",
   default: "Adib a un profil hybride rare : finance, gestion de projet grands comptes, certification Salesforce et passion pour l'IA. Pour en savoir plus, contactez-le directement à chabani-adib@hotmail.com"
 };
+
+// VIDEO MODAL
+function openVideoModal(src) {
+  const modal = document.getElementById('videoModal');
+  const vid = document.getElementById('modalVideo');
+  vid.src = src;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const vid = document.getElementById('modalVideo');
+  vid.pause();
+  vid.src = '';
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideoModal(); });
 
 function getDemo(q) {
   const l = q.toLowerCase();
