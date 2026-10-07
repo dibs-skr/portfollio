@@ -1442,7 +1442,7 @@ async function send() {
   showDots();
   history.push({ role: 'user', content: q });
   try {
-    const GROQ_KEY = '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';
+    const GROQ_KEY = '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';
     const groqMessages = [{ role: 'system', content: PROFILE }, ...history];
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
