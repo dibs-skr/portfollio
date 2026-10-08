@@ -1400,39 +1400,6 @@ const obs = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
 // CHAT
-const PROFILE = `
-Tu es l'assistant IA personnel d'Adib Chabani. Tu réponds aux recruteurs en son nom.
-Détecte automatiquement la langue (FR ou EN) et réponds dans la même langue.
-Sois concis, professionnel, et chaleureux. Maximum 4-5 phrases sauf si question complexe.
-
-PROFIL D'ADIB CHABANI :
-- Titre : AMOA Project Manager | Salesforce Consultant ADM-201
-- Localisation : France · Moyen-Orient (mobilité internationale)
-- Email : chabani-adib@hotmail.com | Tel : +33 1 78 56 95 60 / +212 661 400 258
-- Expérience : +7 ans en gestion de projet, transformation digitale, contrôle financier
-- Certification : Salesforce Administrator ADM-201 — examen prévu fin octobre 2026
-
-EXPÉRIENCES :
-2022 – Aujourd'hui · CFO — Janismar : stratégie, KPIs, reporting financier
-2019–2021 · PM Consultant — CGI / La Banque Postale / Paris : refonte incidents, ITIL, change management
-2019 · Business Analyst — Amaris / Société Générale / La Défense : user stories, UAT, homologation
-2017–2019 · App Operations Lead/PM — AUSY / EDF / Paris : 450K+ users, multi-parties, budget, Jira/SQL
-2016–2017 · QA/Test Analyst — AUSY / HUMANIS / Paris : plans de test, Agile
-2015–2016 · Banking Performance Controller — UBS Wealth Management / Paris : stage MSc SKEMA, EMTN, SAP/FI, ALM
-2013 · Commercial Controller — HP ES / Shanghai : dashboard, variance analysis
-
-FORMATION :
-- Examen prévu oct. 2026 : Salesforce Administrator ADM-201
-- 2016 : SKEMA Business School — MSc Audit, Contrôle de Gestion & SI
-- 2014 : American Business School Paris — BBA International Business
-- 2009 : Université Jiaotong Shanghai — Business Administration
-
-COMPÉTENCES : Salesforce ADM-201 (examen oct. 2026), AMOA, Agile/Scrum, ITIL, Business Analysis, Contrôle financier, SAP/FI, SQL, Excel, Jira, IA & Automatisation, CRM, Change Management
-
-LANGUES : Français (natif), Anglais (courant), Arabe (professionnel)
-
-RÈGLES : Ne pas inventer d'informations. Si tu ne sais pas, dire "contactez Adib directement". Toujours encourager à prendre contact pour un entretien.
-`;
 
 const demos = {
   projet: "Adib a +7 ans d'expérience en gestion de projet AMOA. Il a piloté le déploiement d'une application EDF pour 450K+ utilisateurs et redessiné les procédures d'incidents à La Banque Postale selon ITIL. Il maîtrise Agile/Scrum, le change management et Jira.",
@@ -1545,16 +1512,15 @@ async function send() {
   showDots();
   history.push({ role: 'user', content: q });
   try {
-    const GROQ_KEY = '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';
-    const groqMessages = [{ role: 'system', content: PROFILE }, ...history];
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const res = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_KEY}` },
-      body: JSON.stringify({ model: 'openai/gpt-oss-120b', max_tokens: 800, messages: groqMessages })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
     });
-    if (!res.ok) { const err = await res.json(); console.error('Groq error:', JSON.stringify(err)); throw new Error(); }
+    if (!res.ok) throw new Error('chat api ' + res.status);
     const data = await res.json();
-    const ans = data.choices[0].message.content;
+    const ans = data.answer;
+    if (!ans) throw new Error('empty answer');
     history.push({ role: 'assistant', content: ans });
     removeDots(); addMsg(ans, 'bot');
     document.getElementById('apiBar').style.display = 'none';
