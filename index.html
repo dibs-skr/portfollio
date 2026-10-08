@@ -959,7 +959,7 @@ footer {
 
 <!-- VIDEO BACKGROUND -->
 <div id="video-bg">
-  <video autoplay muted loop playsinline>
+  <video id="bgVideo" muted loop playsinline preload="auto">
     <source src="bg.mp4" type="video/mp4">
   </video>
 </div>
@@ -1442,6 +1442,26 @@ const demos = {
   skills: "Adib's key skills: Salesforce ADM-201, AMOA project management, Agile/Scrum & ITIL, business analysis, financial controlling (SAP/FI, KPIs), change management, SQL & Jira. Trilingual: French, English, Arabic. Based in Paris.",
   default: "Adib a un profil hybride rare : finance, gestion de projet grands comptes, certification Salesforce et passion pour l'IA. Pour en savoir plus, contactez-le directement à chabani-adib@hotmail.com"
 };
+
+// AUTOPLAY BACKGROUND VIDEO
+(function() {
+  const bgv = document.getElementById('bgVideo');
+  if (!bgv) return;
+  bgv.muted = true;
+  const tryPlay = () => bgv.play().catch(() => {});
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryPlay);
+  } else {
+    tryPlay();
+  }
+  // fallback: si bloqué, relance au premier geste utilisateur
+  ['click','touchstart','scroll','keydown'].forEach(ev => {
+    document.addEventListener(ev, function once() {
+      tryPlay();
+      document.removeEventListener(ev, once);
+    }, { once: true });
+  });
+})();
 
 // AUTOPLAY VIDEO CARDS
 function startVideoThumbs() {
