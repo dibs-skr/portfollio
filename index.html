@@ -183,6 +183,13 @@ nav::after {
 .nav-cta:hover::before { transform: translateX(0); }
 .nav-cta::after { display: none !important; }
 .nav-right { display: flex; align-items: center; gap: 1rem; }
+.nav-photo {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--gold3);
+  flex-shrink: 0;
+}
 
 /* HERO */
 .hero {
@@ -996,6 +1003,8 @@ footer {
   .chat-bottom { padding: 1rem 0.75rem; gap: 0.5rem; }
   .chat-in { min-width: 0; }
   .nav-cv { font-size: 0.6rem; padding: 0.45rem 0.9rem; letter-spacing: 0.1em; }
+  .nav-photo { width: 34px; height: 34px; }
+  .nav-right { gap: 0.6rem; }
 }
 @media (max-width: 400px) {
   .hero-meta { grid-template-columns: 1fr; }
@@ -1026,6 +1035,7 @@ footer {
     <li><a href="#chat">Ask the AI</a></li>
   </ul>
   <div class="nav-right">
+    <img class="nav-photo" src="photo.jpg" alt="Adib Chabani" width="40" height="40">
     <a href="mailto:chabani-adib@hotmail.com?subject=Demande%20de%20CV" class="nav-cta nav-cv">Demander le CV →</a>
   </div>
 </nav>
