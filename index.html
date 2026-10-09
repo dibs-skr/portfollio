@@ -182,6 +182,7 @@ nav::after {
 .nav-cta:hover { color: var(--bg) !important; }
 .nav-cta:hover::before { transform: translateX(0); }
 .nav-cta::after { display: none !important; }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
 
 /* HERO */
 .hero {
@@ -994,6 +995,7 @@ footer {
   .section-number { font-size: 5rem; right: 0; }
   .chat-bottom { padding: 1rem 0.75rem; gap: 0.5rem; }
   .chat-in { min-width: 0; }
+  .nav-cv { font-size: 0.6rem; padding: 0.45rem 0.9rem; letter-spacing: 0.1em; }
 }
 @media (max-width: 400px) {
   .hero-meta { grid-template-columns: 1fr; }
@@ -1022,8 +1024,10 @@ footer {
     <li><a href="#education">Formation</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#chat">Ask the AI</a></li>
-    <li><a href="#chat" class="nav-cta">Recruiter? Ask me →</a></li>
   </ul>
+  <div class="nav-right">
+    <a href="mailto:chabani-adib@hotmail.com?subject=Demande%20de%20CV" class="nav-cta nav-cv">Demander le CV →</a>
+  </div>
 </nav>
 
 <!-- HERO -->
